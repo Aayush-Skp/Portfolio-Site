@@ -78,7 +78,7 @@ export const HomePage = () => {
 
       <div className="introduction">
         <div className="my_title">
-          <p>Aayush SKP<br />Web Developer</p>
+          <p>Krishna Panthi<br />Web Developer</p>
         </div>
         <div className="image_container">
           <img src={img} alt="Background Image" />
