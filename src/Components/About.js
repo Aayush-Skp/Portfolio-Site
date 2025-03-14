@@ -1,6 +1,6 @@
-import React, {useEffect, useState, useRef} from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import "./About.css"
-import img from "./my-transparent-dp.png"
+import img from "./../Assets/images/my_transpatent.png"
 
 const About = () => {
   const [coords, setCoords] = useState({ x: 0, y: 0 });
@@ -31,7 +31,7 @@ const About = () => {
     "#3d005e"
   ];
 
-  
+
   useEffect(() => {
     const circleElements = Array(20).fill(0).map((_, index) => (
       <div
@@ -81,16 +81,19 @@ const About = () => {
 
   return (
     <>
-     <div>
-      {circles}
-    </div>
-    <div className="Description">
-    Hello, I am Krishna Panthi. I am in the final year of my computer
-     engineering degree, passionately pursuing a career in web development.
-    </div>
-    <div className="my-dp-box">
+      <div>
+        {circles}
+      </div>
+      <div className="Description">
+        Passionate about turning ideas into reality through code.
+        Every project is an opportunity to push boundaries, solve
+        challenges, and create something impactful. Determined to
+        grow, adapt, and build, I am always on a journey to turn visions
+        into digital solutions that make a difference.
+      </div>
+      <div className="my-dp-box">
         <img src={img} alt="My-DP" /> </div>
-    
+
     </>
   );
 }

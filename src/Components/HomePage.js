@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import "./HomePage.css"
 import img from "./homebg.jpg"
 import About from './About';
-import  Skills  from "./Skills"
+import Skills from "./Skills"
 
 export const HomePage = () => {
   useEffect(() => {
@@ -78,23 +78,19 @@ export const HomePage = () => {
 
       <div className="introduction">
         <div className="my_title">
-          <p>Krishna Panthi<br />Web Developer</p>
+          <p>Krishna Panthi<br />Web/App Developer</p>
         </div>
         <div className="image_container">
           <img src={img} alt="Background Image" />
         </div>
       </div>
-
       <div className="intermediate-container">
-        <About/>
+        <About />
       </div>
-
       <div className="container-third">
-        <Skills/>
+        <Skills />
       </div>
-
       <div className="container-fourth">DreamForge <br />Construction Zone</div>
-
       <footer>
         <div className="footer"></div>
       </footer>
