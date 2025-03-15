@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import "./About.css"
-import img from "./../Assets/images/my_transpatent.png"
+import img from "./../../Assets/images/my_transpatent.png"
 
 const About = () => {
   const [coords, setCoords] = useState({ x: 0, y: 0 });
@@ -30,7 +30,6 @@ const About = () => {
     "#48005f",
     "#3d005e"
   ];
-
 
   useEffect(() => {
     const circleElements = Array(20).fill(0).map((_, index) => (
@@ -81,7 +80,7 @@ const About = () => {
 
   return (
     <>
-      <div>
+      <div style={{ position: 'absolute' }}>
         {circles}
       </div>
       <div className="Description">

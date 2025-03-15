@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import "./HomePage.css"
 import img from "./homebg.jpg"
-import About from './About';
-import Skills from "./Skills"
+import About from '../aboutPage/About';
+import Skills from "../skillsPage/Skills"
 
 export const HomePage = () => {
   useEffect(() => {
@@ -88,7 +88,7 @@ export const HomePage = () => {
         <About />
       </div>
       <div className="container-third">
-        <Skills />
+        {/* <Skills /> */}
       </div>
       <div className="container-fourth">DreamForge <br />Construction Zone</div>
       <footer>

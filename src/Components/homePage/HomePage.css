@@ -18,7 +18,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    cursor:none;
+    cursor: none;
 }
 
 
@@ -209,6 +209,7 @@ header {
     object-fit: cover;
 
 }
+
 .image_container::before {
     height: 100%;
     width: 100%;
@@ -244,23 +245,24 @@ header {
 
 }
 
-.my_title>p::after{
-    content:'Have a great day';
-    font-size:1rem;
-    position:relative;
-    top:30px;
+.my_title>p::after {
+    content: 'Have a great day';
+    font-size: 1rem;
+    position: relative;
+    top: 30px;
     background-color: rgb(253, 178, 49);
     border-radius: 2px;
-    padding:0 10px 0 70px;
+    padding: 0 10px 0 70px;
     left: -200px;
 
 }
+
 .intermediate-container {
     display: flex;
     align-items: center;
-    justify-content:space-around;
+    justify-content: space-around;
     flex-wrap: wrap;
-    gap:20px;
+    gap: 20px;
     overflow: hidden;
     border-radius: 30px;
     min-height: 80svh;
