@@ -90,58 +90,58 @@ const Contact = () => {
     //             });
     //     }
     // };
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     if (validate()) {
-    //         setIsSubmitting(true);
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (validate()) {
+            setIsSubmitting(true);
 
-    //         const scriptURL = 'https://script.google.com/macros/s/AKfycbz2NhIvgmQ8y9xfqottVQGcF6yb0jaVYFcnJaMs8eNn-fI09hvhtXH2hNVqq8AeqEY_/exec';
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbz2NhIvgmQ8y9xfqottVQGcF6yb0jaVYFcnJaMs8eNn-fI09hvhtXH2hNVqq8AeqEY_/exec';
 
-    //         // Convert data to URL-encoded format
-    //         const urlEncodedData = new URLSearchParams();
-    //         Object.entries(formData).forEach(([key, value]) => {
-    //             urlEncodedData.append(key, value);
-    //         });
-    //         urlEncodedData.append('timestamp', new Date().toISOString());
-    //         console.log("Sending data:", urlEncodedData.toString());
-    //         fetch(scriptURL, {
-    //             method: 'POST',
-    //             body: urlEncodedData
-    //         }).then(response => {
-    //             console.log("Response status:", response.status);
-    //             console.log("Response headers:", response.headers);
-    //             // Try to get the text version first to debug
-    //             return response.text().then(text => {
-    //                 console.log("Raw response:", text);
-    //                 try {
-    //                     // Then try to parse as JSON
-    //                     return JSON.parse(text);
-    //                 } catch (e) {
-    //                     console.error("JSON parse error:", e);
-    //                     throw new Error("Invalid response format: " + text);
-    //                 }
-    //             });
-    //         }).then(data => {
-    //             setIsSubmitting(false);
-    //             if (data.result === 'success') {
-    //                 setShowDialog(true);
-    //                 setFormData({ name: '', topic: '', email: '', message: '' });
-    //             } else {
-    //                 alert("Error: " + (data.error || 'Unknown error'));
-    //             }
-    //         })
-    //             .catch(error => {
-    //                 setIsSubmitting(false);
-    //                 console.error('Fetch error:', error);
-    //                 let errorMessage = "Network error";
-    //                 if (error.message) {
-    //                     errorMessage += ": " + error.message;
-    //                 }
+            // Convert data to URL-encoded format
+            const urlEncodedData = new URLSearchParams();
+            Object.entries(formData).forEach(([key, value]) => {
+                urlEncodedData.append(key, value);
+            });
+            urlEncodedData.append('timestamp', new Date().toISOString());
+            console.log("Sending data:", urlEncodedData.toString());
+            fetch(scriptURL, {
+                method: 'POST',
+                body: urlEncodedData
+            }).then(response => {
+                console.log("Response status:", response.status);
+                console.log("Response headers:", response.headers);
+                // Try to get the text version first to debug
+                return response.text().then(text => {
+                    console.log("Raw response:", text);
+                    try {
+                        // Then try to parse as JSON
+                        return JSON.parse(text);
+                    } catch (e) {
+                        console.error("JSON parse error:", e);
+                        throw new Error("Invalid response format: " + text);
+                    }
+                });
+            }).then(data => {
+                setIsSubmitting(false);
+                if (data.result === 'success') {
+                    setShowDialog(true);
+                    setFormData({ name: '', topic: '', email: '', message: '' });
+                } else {
+                    alert("Error: " + (data.error || 'Unknown error'));
+                }
+            })
+                .catch(error => {
+                    setIsSubmitting(false);
+                    console.error('Fetch error:', error);
+                    let errorMessage = "Network error";
+                    if (error.message) {
+                        errorMessage += ": " + error.message;
+                    }
 
-    //                 alert(errorMessage);
-    //             });
-    //     }
-    // };
+                    alert(errorMessage);
+                });
+        }
+    };
 
     const closeDialog = () => {
         setShowDialog(false);
@@ -156,7 +156,7 @@ const Contact = () => {
                             <h2>Get In Touch</h2>
                             <p>Have a question or want to work together? Send me a message!</p>
 
-                            <form onSubmit={''} className="contact-form">
+                            <form onSubmit={handleSubmit} className="contact-form">
                                 <div className="form-group">
                                     <label htmlFor="name">Name</label>
                                     <input
