@@ -206,7 +206,7 @@
 @media (max-width: 992px) {
     .projects-bx {
         padding: 40px 30px;
-        border-radius: 40px;
+        /* border-radius: 40px; */
     }
 
     .projects h2 {
@@ -225,7 +225,7 @@
 @media (max-width: 768px) {
     .projects-bx {
         padding: 30px 20px;
-        border-radius: 30px;
+        /* border-radius: 30px; */
     }
 
     .projects h2 {
@@ -249,7 +249,7 @@
 @media (max-width: 480px) {
     .projects-bx {
         padding: 25px 15px;
-        border-radius: 20px;
+        /* border-radius: 20px; */
     }
 
     .projects h2 {
