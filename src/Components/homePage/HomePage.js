@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import "./HomePage.css"
-import img from "../../Assets/images/homebg.jpg"
+import img from "../../Assets/images/homebg.jpg";
 import About from '../aboutPage/About';
-import Skills from "../skillsPage/Skills"
-import Projects from '../projectPage/projects'
+import Skills from "../skillsPage/Skills";
+import Projects from '../projectPage/projects';
+import Contact from '../contactPage/contact';
 
 export const HomePage = () => {
   useEffect(() => {
@@ -95,7 +96,9 @@ export const HomePage = () => {
         <Projects />
       </div>
       <footer>
-        <div className="footer"></div>
+        <div className="footer">
+          <Contact />
+        </div>
       </footer>
     </>
   );
