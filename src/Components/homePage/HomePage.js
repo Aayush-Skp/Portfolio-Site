@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import "./HomePage.css"
-import img from "./homebg.jpg"
+import img from "../../Assets/images/homebg.jpg"
 import About from '../aboutPage/About';
 import Skills from "../skillsPage/Skills"
+import Projects from '../projectPage/projects'
 
 export const HomePage = () => {
   useEffect(() => {
@@ -88,9 +89,11 @@ export const HomePage = () => {
         <About />
       </div>
       <div className="container-third">
-        {/* <Skills /> */}
+        <Skills />
       </div>
-      <div className="container-fourth">DreamForge <br />Construction Zone</div>
+      <div className="container-fourth">
+        <Projects />
+      </div>
       <footer>
         <div className="footer"></div>
       </footer>

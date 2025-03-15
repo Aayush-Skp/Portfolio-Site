@@ -1,11 +1,12 @@
 .Description {
     display: flex;
+    margin: 5rem;
     text-align: left;
-    justify-items: center;
-    /* font-weight: 1000; */
+    justify-items: left;
     align-items: center;
-    color: rgba(65, 65, 65, 0.8);
-    font-size: 2rem;
+    /* color: rgba(65, 65, 65, 0.8); */
+    color: var(--clr-fourth);
+    font-size: 1.8rem;
     font-weight: 400;
     height: 65vh;
     min-width: 400px;
@@ -13,9 +14,6 @@
     text-transform: inherit;
     padding: 0 10px;
     position: relative;
-    /* font-family: "Anton SC", sans-serif; */
-
-
 }
 
 .my-dp-box {

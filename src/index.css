@@ -1,0 +1,12 @@
+:root {
+    --clr-primary: rgba(15, 15, 15, 1);
+    --clr-primarydead: rgba(15, 15, 15, 0);
+    --clr-secondary: #FCFCFC;
+    --clr-orange: #f88c00;
+    --clr-third: rgb(235, 235, 161);
+    --clr-fourth: #1E1E1E;
+    --primary-font: Inter, ui-sans-serif, system-ui, sans-serif;
+    --secondary-font: Poppins, sans-serif;
+    --third-font: Tahoma, Verdana, sans-serif;
+    --btn-scale: 1;
+}

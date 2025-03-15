@@ -8,8 +8,6 @@
     --secondary-font: Poppins, sans-serif;
     --third-font: Tahoma, Verdana, sans-serif;
     --btn-scale: 1;
-    /* Default scaling factor */
-
 }
 
 *,
@@ -86,7 +84,6 @@ header {
         rgba(0, 0, 0, 0) 0px 0px 0px 0px,
         rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
         rgba(0, 0, 0, 0.1) 0px 8px 10px -6px;
-
 }
 
 .navbar .logo {
@@ -242,7 +239,6 @@ header {
     justify-content: center;
     align-items: center;
     margin-top: -5rem;
-
 }
 
 .my_title>p::after {
@@ -250,7 +246,7 @@ header {
     font-size: 1rem;
     position: relative;
     top: 30px;
-    background-color: rgb(253, 178, 49);
+    background-color: var(--clr-orange);
     border-radius: 2px;
     padding: 0 10px 0 70px;
     left: -200px;
@@ -272,13 +268,15 @@ header {
 }
 
 .container-third {
-    height: 80vh;
+    height: 100%;
     width: 100%;
 
 }
 
 .container-fourth {
-    border-radius: 30px 30px 0 0;
+    height: 100%;
+    width: 100%;
+    /* border-radius: 30px 30px 0 0;
     height: 80vh;
     width: 100%;
     background-color: var(--clr-secondary);
@@ -289,7 +287,7 @@ header {
     text-align: center;
     color: var(--clr-primary);
     font-weight: 600;
-    font-size: 3rem;
+    font-size: 3rem; */
 }
 
 .footer {
@@ -377,6 +375,33 @@ body::-webkit-scrollbar-thumb {
     }
 }
 
+@media (max-width:750px) {
+    .my_title {
+        position: absolute;
+        left: 0px;
+        z-index: 3;
+        font-size: 2rem;
+        height: 100vh;
+        min-width: 600px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: -5rem;
+    }
+
+    .my_title>p::after {
+        content: 'Have a great day';
+        font-size: .7rem;
+        position: relative;
+        top: 30px;
+        background-color: rgb(253, 178, 49);
+        border-radius: 2px;
+        padding: 0 10px 0 70px;
+        left: -200px;
+
+    }
+}
+
 @media (max-width: 570px) {
     :root {
         --btn-scale: 1;
@@ -398,6 +423,8 @@ body::-webkit-scrollbar-thumb {
     .navbar .logo {
         scale: 0.8;
     }
+
+
 }
 
 /* -----Responsive NavBAr Query Ends--------- */
