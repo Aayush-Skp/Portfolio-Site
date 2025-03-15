@@ -120,7 +120,13 @@ const Contact = () => {
                 })
                 .catch(error => {
                     setIsSubmitting(false);
-                    alert("Network error. Please check your connection.");
+                    console.error('Fetch error:', error);
+                    let errorMessage = "Network error";
+                    if (error.message) {
+                        errorMessage += ": " + error.message;
+                    }
+
+                    alert(errorMessage);
                 });
         }
     };
