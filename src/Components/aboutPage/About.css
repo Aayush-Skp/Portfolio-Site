@@ -1,43 +1,3 @@
-.Description {
-    display: flex;
-    margin: 5rem;
-    text-align: left;
-    justify-items: left;
-    align-items: center;
-    /* color: rgba(65, 65, 65, 0.8); */
-    color: var(--clr-fourth);
-    font-size: 1.8rem;
-    font-weight: 400;
-    height: 65vh;
-    min-width: 400px;
-    max-width: 500px;
-    text-transform: inherit;
-    padding: 0 10px;
-    position: relative;
-}
-
-.my-dp-box {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(253, 178, 49, .2);
-    height: 65vh;
-    min-width: 450px;
-    overflow: visible;
-    position: relative;
-    border-radius: 55px 0;
-
-}
-
-.my-dp-box>img {
-    position: absolute;
-    bottom: 0px;
-    width: 170%;
-    height: 110%;
-    object-fit: contain;
-
-}
-
 .circle {
     height: 24px;
     width: 24px;
@@ -48,4 +8,76 @@
     pointer-events: none;
     z-index: 99999999;
     cursor: none;
+}
+
+.Description {
+    display: flex;
+    margin: 5rem 3rem;
+    text-align: left;
+    justify-items: left;
+    align-items: center;
+    /* color: var(--clr-fourth, #414141); */
+    color: var(--clr-secondary);
+    font-size: 1.6rem;
+    font-weight: 400;
+    height: auto;
+    min-height: 65vh;
+    max-width: 550px;
+    text-transform: inherit;
+    padding: 2rem;
+    position: relative;
+    /* background: rgba(255, 255, 255, 0.05); */
+    background: var(--clr-fourth);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    /* box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08); */
+    line-height: 1.6;
+    animation: fadeIn 1s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.my-dp-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background: linear-gradient(135deg, rgba(253, 178, 49, 0.2), rgba(253, 178, 49, 0.3)); */
+    /* background: var(--clr-third); */
+    background: linear-gradient(to bottom, rgb(235, 235, 161), rgb(250, 250, 180));
+    height: 65vh;
+    min-width: 450px;
+    max-width: 650px;
+    overflow: visible;
+    position: relative;
+    border-radius: 55px 0;
+    /* box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1); */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.my-dp-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.my-dp-box>img {
+    position: absolute;
+    bottom: 0px;
+    width: 170%;
+    height: 110%;
+    object-fit: contain;
+    transition: transform 0.5s ease;
+}
+
+.my-dp-box:hover>img {
+    transform: scale(1.02);
 }
