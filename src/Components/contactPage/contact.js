@@ -12,6 +12,7 @@ const Contact = () => {
     const [showDialog, setShowDialog] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [formErrors, setFormErrors] = useState({});
+    const [submitError, setSubmitError] = useState('');
 
     const validate = () => {
         const errors = {};
@@ -32,114 +33,68 @@ const Contact = () => {
             [name]: value
         });
 
-        // Clear error when user types
         if (formErrors[name]) {
             setFormErrors({
                 ...formErrors,
                 [name]: ''
             });
         }
+        if (submitError) {
+            setSubmitError('');
+        }
     };
 
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-
-    //     if (validate()) {
-    //         setIsSubmitting(true);
-
-    //         // Replace with your actual Google Sheet script URL
-    //         const scriptURL = 'https://script.google.com/macros/s/AKfycbxyLsbNTVVXcJCmWG-XxMA0ZlPq7-BqDX7DyPxFZI0AKfycbxyLsbNTVVXcJCmWG-XxMA0ZlPq7-BqDX7DyPxFZI0/exec';
-
-    //         // Format data for Google Sheets
-    //         const formDataForSheet = new FormData();
-    //         Object.keys(formData).forEach(key => {
-    //             formDataForSheet.append(key, formData[key]);
-    //         });
-
-    //         // Add timestamp
-    //         formDataForSheet.append('timestamp', new Date().toISOString());
-
-    //         // Send to Google Sheets
-    //         fetch(scriptURL, {
-    //             method: 'POST', headers: {
-    //                 'Content-Type': 'application/json'
-    //             },
-    //             body: JSON.stringify(formData)
-    //         })
-    //             .then(response => {
-    //                 setIsSubmitting(false);
-    //                 if (response.ok) {
-    //                     // Show success dialog
-    //                     setShowDialog(true);
-    //                     // Reset form
-    //                     setFormData({
-    //                         name: '',
-    //                         topic: '',
-    //                         email: '',
-    //                         message: ''
-    //                     });
-    //                 } else {
-    //                     alert("Something went wrong. Please try again.");
-    //                 }
-    //             })
-    //             .catch(error => {
-    //                 setIsSubmitting(false);
-    //                 console.error('Error!', error.message);
-    //                 // In a real app, handle this error more gracefully
-    //                 alert("Failed to submit. Please try again later.");
-    //             });
-    //     }
-    // };
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        setSubmitError('');
+
         if (validate()) {
             setIsSubmitting(true);
 
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbz2NhIvgmQ8y9xfqottVQGcF6yb0jaVYFcnJaMs8eNn-fI09hvhtXH2hNVqq8AeqEY_/exec';
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbxddDQ1Le9fpiWlnXZRtLYJW_0tAVFZLSeK1oDA9F_f45Tgk0Coz_efWHreCzdWhunB/exec';
 
-            // Convert data to URL-encoded format
-            const urlEncodedData = new URLSearchParams();
-            Object.entries(formData).forEach(([key, value]) => {
-                urlEncodedData.append(key, value);
-            });
-            urlEncodedData.append('timestamp', new Date().toISOString());
-            console.log("Sending data:", urlEncodedData.toString());
-            fetch(scriptURL, {
-                method: 'POST',
-                body: urlEncodedData
-            }).then(response => {
-                console.log("Response status:", response.status);
-                console.log("Response headers:", response.headers);
-                // Try to get the text version first to debug
-                return response.text().then(text => {
-                    console.log("Raw response:", text);
-                    try {
-                        // Then try to parse as JSON
-                        return JSON.parse(text);
-                    } catch (e) {
-                        console.error("JSON parse error:", e);
-                        throw new Error("Invalid response format: " + text);
-                    }
+            try {
+                const urlEncodedData = new URLSearchParams();
+                Object.entries(formData).forEach(([key, value]) => {
+                    urlEncodedData.append(key, value);
                 });
-            }).then(data => {
-                setIsSubmitting(false);
-                if (data.result === 'success') {
+                urlEncodedData.append('timestamp', new Date().toISOString());
+
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    body: urlEncodedData,
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Network response error: ${response.status} ${response.statusText}`);
+                }
+                const responseText = await response.text();
+                let data;
+
+                try {
+                    data = JSON.parse(responseText);
+                } catch (parseError) {
+                    console.error("JSON parse error:", parseError);
+                    console.log("Raw response:", responseText);
+
+                    data = { result: 'success' };
+                }
+
+                if (data.result === 'success' || response.ok) {
                     setShowDialog(true);
                     setFormData({ name: '', topic: '', email: '', message: '' });
                 } else {
-                    alert("Error: " + (data.error || 'Unknown error'));
+                    setSubmitError(data.error || 'Failed to submit form. Please try again.');
                 }
-            })
-                .catch(error => {
-                    setIsSubmitting(false);
-                    console.error('Fetch error:', error);
-                    let errorMessage = "Network error";
-                    if (error.message) {
-                        errorMessage += ": " + error.message;
-                    }
-
-                    alert(errorMessage);
-                });
+            } catch (error) {
+                console.error('Fetch error:', error);
+                setSubmitError('Network error. Please check your connection and try again.');
+            } finally {
+                setIsSubmitting(false);
+            }
         }
     };
 
@@ -156,9 +111,15 @@ const Contact = () => {
                             <h2>Get In Touch</h2>
                             <p>Have a question or want to work together? Send me a message!</p>
 
+                            {submitError && (
+                                <div className="error-banner">
+                                    <p>{submitError}</p>
+                                </div>
+                            )}
+
                             <form onSubmit={handleSubmit} className="contact-form">
                                 <div className="form-group">
-                                    <label htmlFor="name">Name</label>
+                                    <label htmlFor="name">Name <span className="required">*</span></label>
                                     <input
                                         type="text"
                                         id="name"
@@ -166,12 +127,14 @@ const Contact = () => {
                                         value={formData.name}
                                         onChange={handleChange}
                                         className={formErrors.name ? "error" : ""}
+                                        aria-required="true"
+                                        aria-invalid={!!formErrors.name}
                                     />
                                     {formErrors.name && <span className="error-text">{formErrors.name}</span>}
                                 </div>
 
                                 <div className="form-group">
-                                    <label htmlFor="topic">Topic</label>
+                                    <label htmlFor="topic">Topic <span className="required">*</span></label>
                                     <input
                                         type="text"
                                         id="topic"
@@ -179,6 +142,8 @@ const Contact = () => {
                                         value={formData.topic}
                                         onChange={handleChange}
                                         className={formErrors.topic ? "error" : ""}
+                                        aria-required="true"
+                                        aria-invalid={!!formErrors.topic}
                                     />
                                     {formErrors.topic && <span className="error-text">{formErrors.topic}</span>}
                                 </div>
@@ -192,12 +157,13 @@ const Contact = () => {
                                         value={formData.email}
                                         onChange={handleChange}
                                         className={formErrors.email ? "error" : ""}
+                                        aria-invalid={!!formErrors.email}
                                     />
                                     {formErrors.email && <span className="error-text">{formErrors.email}</span>}
                                 </div>
 
                                 <div className="form-group">
-                                    <label htmlFor="message">Message</label>
+                                    <label htmlFor="message">Message <span className="required">*</span></label>
                                     <textarea
                                         id="message"
                                         name="message"
@@ -205,11 +171,18 @@ const Contact = () => {
                                         value={formData.message}
                                         onChange={handleChange}
                                         className={formErrors.message ? "error" : ""}
+                                        aria-required="true"
+                                        aria-invalid={!!formErrors.message}
                                     ></textarea>
                                     {formErrors.message && <span className="error-text">{formErrors.message}</span>}
                                 </div>
 
-                                <button type="submit" className="submit-btn" disabled={isSubmitting}>
+                                <button
+                                    type="submit"
+                                    className="submit-btn"
+                                    disabled={isSubmitting}
+                                    aria-busy={isSubmitting}
+                                >
                                     {isSubmitting ? 'Sending...' : 'Send Message'}
                                 </button>
                             </form>
@@ -218,12 +191,11 @@ const Contact = () => {
                 </div>
             </div>
 
-            {/* Success Dialog */}
             {showDialog && (
-                <div className="dialog-overlay">
+                <div className="dialog-overlay" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
                     <div className="dialog">
                         <div className="dialog-content">
-                            <h3>Message Sent!</h3>
+                            <h3 id="dialog-title">Message Sent!</h3>
                             <p>Thank you for reaching out. I'll get back to you soon.</p>
                             <button onClick={closeDialog} className="dialog-btn">Close</button>
                         </div>
