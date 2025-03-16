@@ -10,3 +10,7 @@
     --third-font: Tahoma, Verdana, sans-serif;
     --btn-scale: 1;
 }
+
+html {
+    scroll-behavior: smooth;
+}

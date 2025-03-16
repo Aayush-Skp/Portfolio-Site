@@ -57,28 +57,28 @@ export const HomePage = () => {
     <>
       <header>
         <div className="navbar">
-          <div className="logo"><a href="#">Aayush SKP</a></div>
+          <div className="logo"><a href="#homepage_section">Aayush SKP</a></div>
           <ul className="links">
-            <li><a href="#">About</a></li>
-            <li><a href="#">Skills</a></li>
-            <li><a href="#">Projects</a></li>
-            <li><a href="#">Contacts</a></li>
+            <li><a href="#about_section">About</a></li>
+            <li><a href="#skill_section">Skills</a></li>
+            <li><a href="#projects_section">Projects</a></li>
+            <li><a href="#contact_section">Contacts</a></li>
           </ul>
-          <a href="#" className="connect_btn">Connect With Me</a>
+          <a href="https://www.facebook.com/Aayushskp/" className="connect_btn" target="_blank" rel="noopener noreferrer">Connect With Me</a>
           <div className="toggle_btn">
             <i className="Drop_down_btn"></i>
           </div>
         </div>
         <div className="dropdown_menu">
-          <li><a href="#">About</a></li>
-          <li><a href="#">Skills</a></li>
-          <li><a href="#">Projects</a></li>
-          <li><a href="#">Contacts</a></li>
-          <li><a href="#" className="connect_btn">Connect With Me</a></li>
+          <li><a href="#about_section">About</a></li>
+          <li><a href="#skill_section">Skills</a></li>
+          <li><a href="#projects_section">Projects</a></li>
+          <li><a href="#contact_section">Contacts</a></li>
+          <li><a href="https://www.facebook.com/Aayushskp/" className="connect_btn" target="_blank" rel="noopener noreferrer">Connect With Me</a></li>
         </div>
       </header>
 
-      <div className="introduction">
+      <div className="introduction" id='homepage_section'>
         <div className="my_title">
           <p>Krishna Panthi<br />Web/App Developer</p>
         </div>
@@ -86,17 +86,17 @@ export const HomePage = () => {
           <img src={img} alt="Background Image" />
         </div>
       </div>
-      <div className="intermediate-container">
+      <div className="intermediate-container" id='about_section'>
         <About />
       </div>
-      <div className="container-third">
+      <div className="container-third" id='skill_section'>
         <Skills />
       </div>
-      <div className="container-fourth">
+      <div className="container-fourth" id='projects_section'>
         <Projects />
       </div>
       <footer>
-        <div className="footer">
+        <div className="footer" id="contact_section">
           <Contact />
         </div>
       </footer>
