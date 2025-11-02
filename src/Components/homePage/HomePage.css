@@ -290,6 +290,11 @@ header {
     font-size: 3rem; */
 }
 
+.container-experience {
+    height: 100%;
+    width: 100%;
+}
+
 .footer {
     height: 60vh;
     width: 100%;

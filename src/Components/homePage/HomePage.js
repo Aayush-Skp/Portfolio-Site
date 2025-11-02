@@ -4,6 +4,7 @@ import img from "../../Assets/images/homebg.jpg";
 import About from '../aboutPage/About';
 import Skills from "../skillsPage/Skills";
 import Projects from '../projectPage/projects';
+import Experience from '../experiencePage/Experience';
 import Contact from '../contactPage/contact';
 
 export const HomePage = () => {
@@ -62,6 +63,7 @@ export const HomePage = () => {
             <li><a href="#about_section">About</a></li>
             <li><a href="#skill_section">Skills</a></li>
             <li><a href="#projects_section">Projects</a></li>
+            <li><a href="#experience_section">Experience</a></li>
             <li><a href="#contact_section">Contacts</a></li>
           </ul>
           <a href="https://www.facebook.com/Aayushskp/" className="connect_btn" target="_blank" rel="noopener noreferrer">Connect With Me</a>
@@ -73,6 +75,7 @@ export const HomePage = () => {
           <li><a href="#about_section">About</a></li>
           <li><a href="#skill_section">Skills</a></li>
           <li><a href="#projects_section">Projects</a></li>
+          <li><a href="#experience_section">Experience</a></li>
           <li><a href="#contact_section">Contacts</a></li>
           <li><a href="https://www.facebook.com/Aayushskp/" className="connect_btn" target="_blank" rel="noopener noreferrer">Connect With Me</a></li>
         </div>
@@ -94,6 +97,9 @@ export const HomePage = () => {
       </div>
       <div className="container-fourth" id='projects_section'>
         <Projects />
+      </div>
+      <div className="container-experience" id='experience_section'>
+        <Experience />
       </div>
       <footer>
         <div className="footer" id="contact_section">
