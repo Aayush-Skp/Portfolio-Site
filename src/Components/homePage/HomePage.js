@@ -6,6 +6,7 @@ import Skills from "../skillsPage/Skills";
 import Projects from '../projectPage/projects';
 import Experience from '../experiencePage/Experience';
 import Contact from '../contactPage/contact';
+import SocialLinks from '../socialLinks/SocialLinks';
 
 export const HomePage = () => {
   useEffect(() => {
@@ -106,6 +107,7 @@ export const HomePage = () => {
           <Contact />
         </div>
       </footer>
+      <SocialLinks />
     </>
   );
 }

@@ -1,0 +1,225 @@
+.social-links-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+    font-family: var(--primary-font);
+}
+
+.social-links-toggle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--clr-orange);
+    border: none;
+    color: #151515;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1001;
+}
+
+.social-links-toggle:hover {
+    transform: scale(1.1);
+    background: #ff9900;
+}
+
+.social-links-toggle:active {
+    transform: scale(0.95);
+}
+
+.social-links-menu {
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    background: var(--clr-fourth);
+    border-radius: 16px;
+    padding: 20px;
+    min-width: 200px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    animation: slideUp 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.social-links-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--clr-orange);
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.social-links-header svg {
+    font-size: 20px;
+}
+
+.social-links-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.social-link-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    background: rgba(20, 20, 20, 0.8);
+    border-radius: 12px;
+    text-decoration: none;
+    color: #B8B8B8;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.social-link-item:hover {
+    background: var(--clr-orange);
+    color: #151515;
+    transform: translateX(-5px);
+    border-color: var(--clr-orange);
+    box-shadow: 0 4px 15px rgba(248, 140, 0, 0.3);
+}
+
+.social-link-item:active {
+    transform: translateX(-3px);
+}
+
+.social-icon {
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+}
+
+.social-name {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.social-links-container.expanded .social-links-toggle {
+    background: rgba(40, 40, 40, 0.9);
+    color: var(--clr-orange);
+}
+
+.social-links-container.expanded .social-links-toggle:hover {
+    background: var(--clr-fourth);
+    color: var(--clr-orange);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .social-links-container {
+        bottom: 20px;
+        right: 20px;
+    }
+
+    .social-links-toggle {
+        width: 55px;
+        height: 55px;
+        font-size: 20px;
+    }
+
+    .social-links-menu {
+        bottom: 75px;
+        right: 0;
+        min-width: 180px;
+        padding: 15px;
+    }
+
+    .social-links-header {
+        font-size: 16px;
+        margin-bottom: 12px;
+        padding-bottom: 12px;
+    }
+
+    .social-link-item {
+        padding: 10px 12px;
+    }
+
+    .social-icon {
+        font-size: 18px;
+        width: 22px;
+        height: 22px;
+    }
+
+    .social-name {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .social-links-container {
+        bottom: 15px;
+        right: 15px;
+    }
+
+    .social-links-toggle {
+        width: 50px;
+        height: 50px;
+        font-size: 18px;
+    }
+
+    .social-links-menu {
+        bottom: 70px;
+        min-width: 160px;
+        padding: 12px;
+    }
+
+    .social-links-header {
+        font-size: 15px;
+        gap: 8px;
+    }
+
+    .social-link-item {
+        padding: 8px 10px;
+        gap: 10px;
+    }
+}
+
+
+/* Smooth transitions */
+.social-links-menu {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.social-link-item {
+    position: relative;
+    overflow: hidden;
+}
+
+.social-link-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.social-link-item:hover::before {
+    left: 100%;
+}
+
