@@ -67,7 +67,7 @@ export const HomePage = () => {
             <li><a href="#experience_section">Experience</a></li>
             <li><a href="#contact_section">Contacts</a></li>
           </ul>
-          <a href="https://www.facebook.com/Aayushskp/" className="connect_btn" target="_blank" rel="noopener noreferrer">Connect With Me</a>
+          <a href="https://www.linkedin.com/in/krishna-panthi/" className="connect_btn" target="_blank" rel="noopener noreferrer">Connect With Me</a>
           <div className="toggle_btn">
             <i className="Drop_down_btn"></i>
           </div>
@@ -78,7 +78,7 @@ export const HomePage = () => {
           <li><a href="#projects_section">Projects</a></li>
           <li><a href="#experience_section">Experience</a></li>
           <li><a href="#contact_section">Contacts</a></li>
-          <li><a href="https://www.facebook.com/Aayushskp/" className="connect_btn" target="_blank" rel="noopener noreferrer">Connect With Me</a></li>
+          <li><a href="https://www.linkedin.com/in/krishna-panthi/" className="connect_btn" target="_blank" rel="noopener noreferrer">Connect With Me</a></li>
         </div>
       </header>
 
