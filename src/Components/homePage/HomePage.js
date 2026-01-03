@@ -11,10 +11,46 @@ import SocialLinks from '../socialLinks/SocialLinks';
 export const HomePage = () => {
   const [particles, setParticles] = useState([]);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [showMouseGlow, setShowMouseGlow] = useState(true);
   const introductionRef = useRef(null);
   const particlesRef = useRef([]);
   const animationFrameRef = useRef(null);
   const mouseRef = useRef({ x: 0, y: 0 });
+
+  // Ensure page starts at top on load and prevent scroll issues
+  useEffect(() => {
+    // Prevent scroll restoration
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    
+    // Force scroll to top on mount
+    const scrollToTop = () => {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'instant'
+      });
+    };
+    
+    // Immediate scroll
+    scrollToTop();
+    
+    // Also scroll after a tiny delay to catch any layout shifts
+    const timeoutId = setTimeout(scrollToTop, 0);
+    
+    // Handle hash links - if there's a hash, scroll after layout is ready
+    if (window.location.hash) {
+      const hashElement = document.querySelector(window.location.hash);
+      if (hashElement) {
+        setTimeout(() => {
+          hashElement.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    }
+    
+    return () => clearTimeout(timeoutId);
+  }, []);
 
   useEffect(() => {
     // Initialize particles
@@ -30,6 +66,10 @@ export const HomePage = () => {
           size: 3 + Math.random() * 4,
           opacity: 0.5 + Math.random() * 0.5,
           baseOpacity: 0.5 + Math.random() * 0.5,
+          twinkleDelay: Math.random() * 3, // Random delay for twinkling
+          twinkleSpeed: 2 + Math.random() * 3, // Random twinkle speed
+          scale: 1,
+          glowIntensity: 0.7,
         }));
         setParticles(newParticles);
         particlesRef.current = newParticles;
@@ -45,14 +85,20 @@ export const HomePage = () => {
     const handleMouseMove = (e) => {
       if (introductionRef.current) {
         const rect = introductionRef.current.getBoundingClientRect();
+        const relativeY = e.clientY - rect.top;
+        const navbarThreshold = 150; // Hide glow when within 150px from top
+        
         mouseRef.current = {
           x: e.clientX - rect.left,
-          y: e.clientY - rect.top
+          y: relativeY
         };
         setMousePos({
           x: e.clientX - rect.left,
-          y: e.clientY - rect.top
+          y: relativeY
         });
+        
+        // Hide mouse glow near navbar
+        setShowMouseGlow(relativeY > navbarThreshold);
       }
     };
 
@@ -62,11 +108,19 @@ export const HomePage = () => {
         const mouseX = mouseRef.current.x;
         const mouseY = mouseRef.current.y;
         const mouseRadius = 150; // Interaction radius
+        const time = Date.now() * 0.001; // Time in seconds
 
         particlesRef.current = particlesRef.current.map(particle => {
           const dx = mouseX - particle.x;
           const dy = mouseY - particle.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
+
+          // Twinkling effect - each particle twinkles independently
+          const twinkle = Math.sin(time * particle.twinkleSpeed + particle.twinkleDelay) * 0.4 + 0.6;
+          const twinkleIntensity = Math.max(0.3, twinkle); // Minimum visibility
+          let twinkleOpacity = particle.baseOpacity * twinkleIntensity;
+          const twinkleScale = 0.9 + (twinkle * 0.2); // Scale between 0.9 and 1.1
+          const twinkleGlow = twinkle * 0.8; // Glow intensity based on twinkle
 
           if (distance < mouseRadius) {
             // Push particles away from mouse with stronger force
@@ -74,11 +128,15 @@ export const HomePage = () => {
             const angle = Math.atan2(dy, dx);
             particle.vx -= Math.cos(angle) * force * 0.5;
             particle.vy -= Math.sin(angle) * force * 0.5;
-            // Increase opacity when near mouse
-            particle.opacity = Math.min(1, particle.baseOpacity + force * 0.5);
+            // Increase opacity when near mouse (combine with twinkle)
+            particle.opacity = Math.min(1, twinkleOpacity + force * 0.5);
+            particle.scale = twinkleScale;
+            particle.glowIntensity = Math.min(1, twinkleGlow + force * 0.3);
           } else {
-            // Gradually return to base opacity
-            particle.opacity = particle.baseOpacity;
+            // Use twinkling opacity
+            particle.opacity = twinkleOpacity;
+            particle.scale = twinkleScale;
+            particle.glowIntensity = twinkleGlow;
           }
 
           // Update position
@@ -208,17 +266,20 @@ export const HomePage = () => {
                 width: `${particle.size}px`,
                 height: `${particle.size}px`,
                 opacity: particle.opacity,
-                boxShadow: `0 0 ${particle.size * 4}px rgba(255, 215, 0, ${particle.opacity * 0.8}), 0 0 ${particle.size * 2}px rgba(248, 200, 100, ${particle.opacity * 0.6})`,
+                transform: `translate(-50%, -50%) scale(${particle.scale || 1})`,
+                boxShadow: `0 0 ${particle.size * 5 * (particle.glowIntensity || 0.7)}px rgba(255, 215, 0, ${(particle.glowIntensity || 0.7) * 0.9}), 0 0 ${particle.size * 3 * (particle.glowIntensity || 0.7)}px rgba(248, 200, 100, ${(particle.glowIntensity || 0.7) * 0.7}), 0 0 ${particle.size * 1.5 * (particle.glowIntensity || 0.7)}px rgba(255, 255, 255, ${(particle.glowIntensity || 0.7) * 0.5})`,
               }}
             />
           ))}
-          <div 
-            className="mouse-glow"
-            style={{
-              left: `${mousePos.x}px`,
-              top: `${mousePos.y}px`,
-            }}
-          />
+          {showMouseGlow && (
+            <div 
+              className="mouse-glow"
+              style={{
+                left: `${mousePos.x}px`,
+                top: `${mousePos.y}px`,
+              }}
+            />
+          )}
         </div>
         <div className="my_title">
           <p>Krishna Panthi<br />Web/App Developer</p>
