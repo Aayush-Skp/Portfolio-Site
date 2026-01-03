@@ -1,29 +1,8 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import "./skills.css";
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
 
 const Skills = () => {
-  const responsive = {
-    superLargeDesktop: {
-      breakpoint: { max: 4000, min: 3000 },
-      items: 5
-    },
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 3
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 2
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1
-    }
-  };
+  const skillRefs = useRef([]);
 
   const skillsData = [
     {
@@ -67,50 +46,89 @@ const Skills = () => {
     }
   ];
 
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const progressBar = entry.target.querySelector('.progress-fill');
+          const percentage = entry.target.dataset.percentage;
+          if (progressBar && percentage) {
+            // Use requestAnimationFrame for smooth animation
+            requestAnimationFrame(() => {
+              setTimeout(() => {
+                progressBar.style.width = `${percentage}%`;
+              }, 200);
+            });
+          }
+        }
+      });
+    }, observerOptions);
+
+    // Observe all skill items
+    Object.values(skillRefs.current).forEach((ref) => {
+      if (ref) observer.observe(ref);
+    });
+
+    return () => {
+      Object.values(skillRefs.current).forEach((ref) => {
+        if (ref) observer.unobserve(ref);
+      });
+    };
+  }, []);
+
   return (
     <section className="skill" id="skills">
-      <div className="container">
-        <div className="row">
-          <div className="col-12">
-            <div className="skill-bx">
-              <h2>Technical Skills</h2>
-              <p>Proficient in various technologies across Web development, mobile development, and design.</p>
+      <div className="skill-container">
+        <div className="skill-bx">
+          <h2>Technical Skills</h2>
+          <p>Proficient in various technologies across Web development, mobile development, and design.</p>
 
-              <Carousel
-                responsive={responsive}
-                infinite={true}
-                autoPlay={true}
-                autoPlaySpeed={5000}
-                removeArrowOnDeviceType={["tablet", "mobile"]}
-                className="skill-slider"
+          <div className="skills-categories">
+            {skillsData.map((categoryData, categoryIndex) => (
+              <div 
+                className="skill-category-card" 
+                key={categoryIndex}
+                style={{ '--category-index': categoryIndex }}
               >
-                {skillsData.map((categoryData, index) => (
-                  <div className="skill-category" key={index}>
-                    <h3 className="category-title">{categoryData.category}</h3>
-                    <div className="skills-grid">
-                      {categoryData.skills.map((skill, skillIndex) => (
-                        <div className="skill-item" key={skillIndex}>
-                          <div className="skill-progress">
-                            <CircularProgressbar
-                              value={skill.percentage}
-                              text={`${skill.percentage}%`}
-                              styles={buildStyles({
-                                textSize: '16px',
-                                pathColor: `rgba(235, 235, 161, ${skill.percentage / 100})`,
-                                textColor: '#f88c00',
-                                trailColor: '#151515',
-                                backgroundColor: '#3e98c7',
-                              })}
-                            />
-                          </div>
-                          <h5>{skill.name}</h5>
-                        </div>
-                      ))}
+                <div className="category-header">
+                  <h3 className="category-title">{categoryData.category}</h3>
+                </div>
+                <div className="skills-list">
+                  {categoryData.skills.map((skill, skillIndex) => (
+                    <div 
+                      className="skill-item" 
+                      key={skillIndex}
+                      style={{ '--skill-index': skillIndex }}
+                      ref={(el) => {
+                        const key = `${categoryIndex}-${skillIndex}`;
+                        if (el) {
+                          skillRefs.current[key] = el;
+                          el.dataset.percentage = skill.percentage;
+                        } else {
+                          delete skillRefs.current[key];
+                        }
+                      }}
+                    >
+                      <div className="skill-header">
+                        <span className="skill-name">{skill.name}</span>
+                        <span className="skill-percentage">{skill.percentage}%</span>
+                      </div>
+                      <div className="progress-bar">
+                        <div 
+                          className="progress-fill"
+                          style={{ width: '0%' }}
+                        ></div>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </Carousel>
-            </div>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
