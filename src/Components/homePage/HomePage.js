@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import "./HomePage.css"
-import img from "../../Assets/images/homebg.jpg";
+import img from "../../Assets/images/homebg.webp";
 import About from '../aboutPage/About';
 import Skills from "../skillsPage/Skills";
 import Projects from '../projectPage/projects';
