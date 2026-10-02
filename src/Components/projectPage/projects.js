@@ -3,14 +3,14 @@ import "./projects.css";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { FaGithub, FaGlobe, FaMobile, FaLaptopCode, FaRobot, FaSeedling, FaQrcode, FaUserAlt } from 'react-icons/fa';
-import img from "../../Assets/projects-image/personalApp.png";
-import iSmart from "../../Assets/projects-image/iSmart Integration.png";
-import collectorApp from "../../Assets/projects-image/collectorApp.png";
-import techFest from "../../Assets/projects-image/techFest.png";
-import smartSoil from "../../Assets/projects-image/smartSoil.jpg";
-import devanasoftDashboard from "../../Assets/projects-image/devanasoftDashboard.png";
-import faceRecognition from "../../Assets/projects-image/faceRecognition.png";
-import angriMonitoring from "../../Assets/projects-image/angriMonitoring.png"
+import img from "../../Assets/projects-image/personalApp.webp";
+import iSmart from "../../Assets/projects-image/iSmartIntegration.webp";
+import collectorApp from "../../Assets/projects-image/collectorApp.webp";
+import techFest from "../../Assets/projects-image/techFest.webp";
+import smartSoil from "../../Assets/projects-image/smartSoil.webp";
+import devanasoftDashboard from "../../Assets/projects-image/devanasoftDashboard.webp";
+import faceRecognition from "../../Assets/projects-image/faceRecognition.webp";
+import angriMonitoring from "../../Assets/projects-image/angriMonitoring.webp"
 
 const Projects = () => {
     const responsive = {
@@ -237,7 +237,7 @@ const Projects = () => {
                                             onMouseLeave={handleMouseLeave}
                                         >
                                             <div className="project-image">
-                                                <img src={project.image} alt={project.title} />
+                                                <img src={project.image} alt={project.title} loading="lazy" decoding="async" />
                                                 <div className={`project-overlay ${hoveredProject === project.id ? 'active' : ''}`}>
                                                     <div className="project-links">
                                                         {project.links.github && (

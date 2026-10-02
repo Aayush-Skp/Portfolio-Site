@@ -1,9 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react'
 import "./About.css"
 import img from "./../../Assets/images/my_transpatent.webp"
+import { hasFinePointer } from '../../utils/device';
 
 const About = () => {
-  const [coords, setCoords] = useState({ x: 0, y: 0 });
+  // The cursor trail follows a mouse; touch screens don't get one.
+  const [finePointer] = useState(() => hasFinePointer());
+  const coordsRef = useRef({ x: -100, y: -100 });
   const [circles, setCircles] = useState([]);
   const circleRefs = useRef([]);
   const [activeWordIndex, setActiveWordIndex] = useState(0);
@@ -37,6 +40,7 @@ const About = () => {
   ];
 
   useEffect(() => {
+    if (!finePointer) return;
     const circleElements = Array(20).fill(0).map((_, index) => (
       <div
         key={index}
@@ -51,29 +55,38 @@ const About = () => {
       />
     ));
     setCircles(circleElements);
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [finePointer]);
 
   useEffect(() => {
+    if (!finePointer) return;
     const handleMouseMove = (e) => {
-      setCoords({ x: e.clientX, y: e.clientY });
+      coordsRef.current = { x: e.clientX, y: e.clientY };
     };
-    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
     };
-  }, []);
+  }, [finePointer]);
 
   useEffect(() => {
+    if (!finePointer || circles.length === 0) return;
     let animationFrameId;
+    // Same trailing motion as before, but one long-lived loop that keeps the
+    // positions in memory (no restart per mouse move, no layout reads).
+    const positions = circleRefs.current.map(() => ({ x: -100, y: -100 }));
     function animateCircles() {
-      let x = coords.x;
-      let y = coords.y;
+      let x = coordsRef.current.x;
+      let y = coordsRef.current.y;
       circleRefs.current.forEach((circle, index) => {
-        circle.style.left = x + 0 + "px";
-        circle.style.top = y + 0 + "px";
-        const nextCircle = circleRefs.current[index + 1] || circleRefs.current[0];
-        x += (nextCircle.offsetLeft - x) * 0.5;
-        y += (nextCircle.offsetTop - y) * 0.5;
+        if (!circle) return;
+        circle.style.left = x + "px";
+        circle.style.top = y + "px";
+        positions[index].x = x;
+        positions[index].y = y;
+        const next = positions[index + 1] || positions[0];
+        x += (next.x - x) * 0.5;
+        y += (next.y - y) * 0.5;
       });
       animationFrameId = requestAnimationFrame(animateCircles);
     }
@@ -81,7 +94,7 @@ const About = () => {
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, [circles, coords]);
+  }, [circles, finePointer]);
 
   // Word-by-word reading animation
   useEffect(() => {
@@ -106,7 +119,8 @@ const About = () => {
     ];
 
     const createPetals = () => {
-      const newPetals = Array(25).fill(0).map((_, index) => ({
+      // fewer falling petals on touch devices keeps scrolling smooth
+      const newPetals = Array(finePointer ? 25 : 10).fill(0).map((_, index) => ({
         id: index,
         left: Math.random() * 100,
         delay: Math.random() * 10,
@@ -119,7 +133,7 @@ const About = () => {
     };
 
     createPetals();
-  }, []);
+  }, [finePointer]);
 
   return (
     <>
@@ -157,7 +171,7 @@ const About = () => {
           </div>
         </div>
         <div className="my-dp-box">
-          <img src={img} alt="My-DP" />
+          <img src={img} alt="My-DP" loading="lazy" decoding="async" />
         </div>
       </div>
     </>
