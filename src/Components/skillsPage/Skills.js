@@ -74,11 +74,7 @@ const Skills = () => {
       if (ref) observer.observe(ref);
     });
 
-    return () => {
-      Object.values(skillRefs.current).forEach((ref) => {
-        if (ref) observer.unobserve(ref);
-      });
-    };
+    return () => observer.disconnect();
   }, []);
 
   return (
