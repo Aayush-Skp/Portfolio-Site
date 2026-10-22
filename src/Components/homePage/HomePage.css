@@ -18,16 +18,6 @@
     padding: 0;
 }
 
-/* The custom cursor trail replaces the system cursor only for mouse users.
-   Touch screens keep normal behaviour (no stray cursor dot). */
-@media (hover: hover) and (pointer: fine) {
-    *,
-    *::before,
-    *::after {
-        cursor: none;
-    }
-}
-
 
 
 li {
@@ -216,38 +206,6 @@ header {
     transform: translate(-50%, -50%);
     transition: box-shadow 0.3s ease;
     filter: blur(0.5px);
-}
-
-.mouse-glow {
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    background: radial-gradient(circle,
-            rgba(255, 215, 0, 0.3) 0%,
-            rgba(248, 200, 100, 0.2) 40%,
-            rgba(255, 180, 80, 0.1) 70%,
-            transparent 100%);
-    filter: blur(40px);
-    pointer-events: none;
-    transform: translate(-50%, -50%);
-    will-change: transform;
-    transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-    animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-
-    0%,
-    100% {
-        opacity: 0.6;
-        transform: translate(-50%, -50%) scale(1);
-    }
-
-    50% {
-        opacity: 0.8;
-        transform: translate(-50%, -50%) scale(1.1);
-    }
 }
 
 .left-container {

@@ -15,13 +15,11 @@ const glowShadow = (size, g) =>
 
 export const HomePage = () => {
   const [particles, setParticles] = useState([]);
-  // Custom cursor effects only make sense with a real mouse; on phones the glow
-  // used to sit stuck in the top-left corner.
+  // Mouse interaction only makes sense with a real mouse.
   const [finePointer] = useState(() => hasFinePointer());
   const introductionRef = useRef(null);
   const particlesRef = useRef([]);
   const particleEls = useRef([]);
-  const glowRef = useRef(null);
   const animationFrameRef = useRef(null);
   const mouseRef = useRef({ x: -9999, y: -9999 });
 
@@ -112,13 +110,6 @@ export const HomePage = () => {
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       mouseRef.current = { x, y };
-      const glow = glowRef.current;
-      if (glow) {
-        glow.style.left = `${x}px`;
-        glow.style.top = `${y}px`;
-        // Hide mouse glow near navbar (within 150px from top)
-        glow.style.display = y > 150 ? 'block' : 'none';
-      }
     };
 
     // Particles are moved by writing styles straight to the DOM instead of
@@ -321,7 +312,6 @@ export const HomePage = () => {
               }}
             />
           ))}
-          {finePointer && <div className="mouse-glow" ref={glowRef} style={{ display: 'none' }} />}
         </div>
         <div className="my_title">
           <p>Krishna Panthi<br />Web/App Developer</p>
