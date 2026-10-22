@@ -1,13 +1,29 @@
 :root {
+    /* Colors */
     --clr-primary: rgba(15, 15, 15, 1);
     --clr-primarydead: rgba(15, 15, 15, 0);
     --clr-secondary: #FCFCFC;
     --clr-orange: #f88c00;
     --clr-third: rgb(235, 235, 161);
     --clr-fourth: #1E1E1E;
+    --clr-muted: #B8B8B8;
+    --clr-border: rgba(255, 255, 255, 0.08);
+
+    /* Type */
     --primary-font: Inter, ui-sans-serif, system-ui, sans-serif;
     --secondary-font: Poppins, sans-serif;
     --third-font: Tahoma, Verdana, sans-serif;
+
+    /* Shape: pills/cards share one radius, big section panels another */
+    --radius-sm: 12px;
+    --radius-md: 20px;
+    --radius-lg: 64px;
+
+    /* Layout: the navbar and hero share the same edge on every screen */
+    --content-max: 1200px;
+    --page-gutter: clamp(1rem, 4vw, 2rem);
+    --nav-h: 48px;
+
     --btn-scale: 1;
 }
 
@@ -23,6 +39,8 @@ body {
     -webkit-overflow-scrolling: touch;
     background-color: #0F0F0F;
     font-family: var(--primary-font);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 #root {

@@ -1,14 +1,4 @@
-:root {
-    --clr-primary: rgba(15, 15, 15, 1);
-    --clr-primarydead: rgba(15, 15, 15, 0);
-    --clr-secondary: #FCFCFC;
-    --clr-third: rgb(235, 235, 161);
-    --clr-fourth: #1E1E1E;
-    --primary-font: Inter, ui-sans-serif, system-ui, sans-serif;
-    --secondary-font: Poppins, sans-serif;
-    --third-font: Tahoma, Verdana, sans-serif;
-    --btn-scale: 1;
-}
+/* Design tokens (colors, radii, gutter) live in src/index.css */
 
 *,
 *::before,
@@ -17,8 +7,6 @@
     margin: 0;
     padding: 0;
 }
-
-
 
 li {
     list-style: none;
@@ -34,96 +22,95 @@ a:hover {
     color: var(--clr-third);
 }
 
-/*--------------- Header------------- */
-header {
-    margin-top: 10px;
-    position: sticky;
-    top: 10px;
-    padding: 0 2rem;
+/*--------------- Header ------------- */
+/* One layout for every screen: the header floats over the hero, and every
+   piece of it is the same 48px dark pill with the same radius. */
+.site-header {
+    position: fixed;
+    top: max(12px, env(safe-area-inset-top));
+    left: 0;
+    right: 0;
+    padding: 0 var(--page-gutter);
     z-index: 100;
+    transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.site-header.is-hidden {
+    transform: translateY(calc(-100% - 24px));
+    opacity: 0;
+    pointer-events: none;
 }
 
 .navbar {
-    width: 100%;
-    height: 60px;
-    max-width: 1200px;
+    max-width: var(--content-max);
+    height: var(--nav-h);
     margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    transition: transform 0.4s ease;
+    gap: 1rem;
 }
 
-.navbar .logo a {
-    font-size: 1.5rem;
-    font-weight: bold;
+.navbar .logo,
+.navbar .links,
+.navbar .toggle_btn {
+    height: var(--nav-h);
+    background-color: var(--clr-fourth);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-md);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+        0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar .logo {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 20px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
 }
 
 .navbar .links {
     display: flex;
-    gap: 2rem;
-    font-size: 16px;
-    line-height: 24px;
-    font-weight: 600;
-    text-decoration: none solid rgba(0, 0, 0);
-    word-spacing: 0px;
-    height: 48px;
-    width: 437px;
-    padding: 0 16px;
-    display: flex;
     align-items: center;
-    justify-content: space-around;
-    background-color: var(--clr-fourth);
-    border-radius: 20px;
-    box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px,
-        rgba(0, 0, 0, 0) 0px 0px 0px 0px,
-        rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
-        rgba(0, 0, 0, 0.1) 0px 8px 10px -6px;
+    gap: 0.25rem;
+    padding: 0 8px;
 }
 
-.navbar .logo {
-    display: flex;
-    gap: 2rem;
-    font-size: 14px;
-    line-height: 24px;
+.navbar .links a {
+    display: block;
+    padding: 6px 14px;
     font-weight: 600;
-    text-decoration: none solid rgba(0, 0, 0);
-    word-spacing: 0px;
-    height: 48px;
-    width: 165px;
-    padding: 0 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    background-color: var(--clr-fourth);
-    border-radius: 20px;
-    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1),
-        2px 2px 4px rgba(0, 0, 0, 0.08);
-
+    line-height: 24px;
 }
 
 .navbar .toggle_btn {
-    color: #fff;
+    display: none;
+    width: var(--nav-h);
+    align-items: center;
+    justify-content: center;
+    color: var(--clr-secondary);
     font-size: 1.5rem;
     cursor: pointer;
-    display: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .connect_btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--nav-h);
+    padding: 0 28px;
     background-color: var(--clr-third);
-    width: 200px;
-    height: 48px;
     color: var(--clr-primary);
-    padding: 12px 28px;
-    border: none;
-    outline: none;
-    border-radius: 20px;
-    font-size: 16px;
-    line-height: 24px;
+    border-radius: var(--radius-md);
     font-weight: 600;
-    text-align: center;
+    line-height: 24px;
+    white-space: nowrap;
     cursor: pointer;
-    transition: scale 0.2 ease;
+    transition: scale 0.2s ease;
 }
 
 .connect_btn:hover {
@@ -135,51 +122,90 @@ header {
     scale: 0.95;
 }
 
-/* -------Drop Down Menu---------- */
+.navbar a:focus-visible,
+.navbar .toggle_btn:focus-visible,
+.dropdown_menu a:focus-visible,
+.hero-btn:focus-visible {
+    outline: 2px solid var(--clr-secondary);
+    outline-offset: 3px;
+}
 
+/* ------- Mobile menu ---------- */
 .dropdown_menu {
     display: none;
     position: absolute;
-    right: 2rem;
-    top: 60px;
-    height: 0;
+    top: calc(var(--nav-h) + 8px);
+    right: var(--page-gutter);
     width: 300px;
+    padding: 8px;
     background: var(--clr-fourth);
-    backdrop-filter: blur(15px);
-    border-radius: 10px;
-    overflow: hidden;
-    transition: transform 0.4s ease;
-    transition: height 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid var(--clr-border);
+    border-radius: var(--radius-md);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s linear 0.2s;
 }
 
 .dropdown_menu.open {
-    height: 240px;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-.dropdown_menu li {
-    padding: 0.7rem;
+.dropdown_menu ul {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.dropdown_menu ul a {
+    display: block;
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
 }
 
 .dropdown_menu .connect_btn {
     width: 100%;
+    margin-top: 8px;
 }
 
+@media (max-width: 991.98px) {
+    .navbar .links,
+    .navbar>.connect_btn {
+        display: none;
+    }
+
+    .navbar .toggle_btn {
+        display: inline-flex;
+    }
+
+    .dropdown_menu {
+        display: block;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .dropdown_menu {
+        left: var(--page-gutter);
+        width: auto;
+    }
+}
+
+/* --------------- Hero --------------- */
 .introduction {
-    width: 100%;
-    color: var(--clr-secondary);
-    background-position: center top;
-    font-weight: 600;
-    font-size: 3rem;
-    text-transform: uppercase;
-    height: 100vh;
     position: relative;
+    width: 100%;
+    height: 100vh;
+    /* svh = height with the browser bars visible, so the hero never
+       jumps or hides content behind the URL bar */
+    height: 100svh;
+    min-height: 560px;
     overflow: hidden;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    color: var(--clr-secondary);
 }
 
 .golden-dust-container {
@@ -208,28 +234,19 @@ header {
     filter: blur(0.5px);
 }
 
-.left-container {
-    min-width: 40%;
-    height: auto;
-    background: linear-gradient(90deg, rgba(2, 0, 36, 0.3) 13%, rgba(0, 212, 255, 1) 18%, rgba(0, 212, 255, 1) 96%, rgba(0, 9, 89, 0.3) 100%);
-
-}
-
 .image_container {
-    width: 100%;
-    height: 100%;
-    /* overflow-y: hidden; */
+    position: absolute;
+    inset: 0;
     z-index: 1;
-    position: relative;
 }
 
 .image_container>img {
-    width: 100%;
     position: absolute;
-    height: calc(100%);
+    inset: 0;
+    width: 100%;
+    height: 100%;
     z-index: 3;
     object-fit: cover;
-
 }
 
 .image_container::before {
@@ -255,31 +272,71 @@ header {
     background: linear-gradient(90deg, rgba(15, 15, 15, 1) 0%, rgba(15, 15, 15, 0) 35%, rgba(15, 15, 15, 1) 100%);
 }
 
-.my_title {
-    position: absolute;
-    left: 50px;
-    z-index: 5;
-    height: 100vh;
-    min-width: 600px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: -5rem;
-}
-
-.my_title>p::after {
-    content: 'Have a great day';
-    font-size: 1rem;
+/* Same max width and gutter as the navbar, so the name lines up with the logo */
+.hero-content {
     position: relative;
-    top: 30px;
-    background-color: var(--clr-orange);
-    border-radius: 2px;
-    padding: 0 10px 0 70px;
-    left: -200px;
-    overflow: hidden;
-
+    z-index: 5;
+    height: 100%;
+    max-width: calc(var(--content-max) + 2 * var(--page-gutter));
+    margin: 0 auto;
+    padding: calc(var(--nav-h) + 24px) var(--page-gutter) 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
 }
 
+.hero-title {
+    font-size: clamp(2.75rem, 1.4rem + 5.6vw, 6rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.035em;
+    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.45);
+}
+
+.hero-role {
+    margin-top: 1rem;
+    color: var(--clr-muted);
+    font-size: clamp(1.125rem, 0.9rem + 1vw, 1.5rem);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.55);
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 2.25rem;
+}
+
+.hero-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: var(--nav-h);
+    padding: 0 24px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.hero-btn-primary {
+    background: var(--clr-third);
+    color: var(--clr-primary);
+}
+
+.hero-btn-primary:hover {
+    color: #5a470c;
+}
+
+.hero-btn-ghost {
+    background: var(--clr-fourth);
+    border: 1px solid var(--clr-border);
+}
+
+/* ---------------- Sections ---------------- */
 .intermediate-container {
     display: flex;
     align-items: center;
@@ -301,18 +358,6 @@ header {
 .container-fourth {
     width: 100%;
     overflow: visible;
-    /* border-radius: 30px 30px 0 0;
-    height: 80vh;
-    width: 100%;
-    background-color: var(--clr-secondary);
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    color: var(--clr-primary);
-    font-weight: 600;
-    font-size: 3rem; */
 }
 
 .container-experience {
@@ -325,169 +370,25 @@ header {
     width: 100%;
 }
 
-/*--------------------------- For Scroll Bar-------------------------------*/
+/*--------------------------- Scroll Bar -------------------------------*/
 body::-webkit-scrollbar {
     width: 4px;
-    /* width of the entire scrollbar */
 }
 
 body::-webkit-scrollbar-track {
     background: none;
-    /* color of the tracking area */
 }
 
 body::-webkit-scrollbar-thumb {
-    background-color: blue;
-    /* color of the scroll thumb */
-    border-radius: 20px;
-    /* roundness of the scroll thumb */
-    border: 3px solid var(--clr-third);
-    /* creates padding around scroll thumb */
+    background-color: rgba(252, 252, 252, 0.35);
+    border-radius: var(--radius-md);
 }
 
-/* ----------Drop_down_button--------------- */
-.Drop_down_btn {
-    background-color: var(--clr-fourth);
-    position: relative;
-    display: block;
-    transform: scale(var(--btn-scale, 1));
-    width: 22px;
-    height: 22px;
-    border: 2px solid;
-    border-radius: 4px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1),
-        0 2px 4px rgba(0, 0, 0, 0.08);
-}
-
-.Drop_down_btn::after {
-    content: "";
-    display: block;
-    box-sizing: border-box;
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    border-bottom: 2px solid;
-    border-right: 2px solid;
-    transform: rotate(45deg);
-    left: 6px;
-    top: 5px
-}
-
-/* --------Responsive NavBar and Extra-------- */
-@media(max-width: 992px) {
-    :root {
-        --btn-scale: 1.5;
-    }
-
-    .navbar .links,
-    .navbar .connect_btn {
-        display: none;
-    }
-
-    header {
-        margin-top: 10px;
-        position: sticky;
-        top: 10px;
-        padding: 0 2rem 0 .3rem;
-    }
-
-    .navbar .toggle_btn {
-        display: block;
-    }
-
-    .dropdown_menu {
-        display: block;
-        transition: transform 0.3s ease;
-    }
-
-    .navbar .logo {
-        scale: 0.9;
-    }
-}
-
-@media (max-width:750px) {
-    .my_title {
-        position: absolute;
-        left: 0px;
-        z-index: 3;
-        font-size: 2rem;
-        height: 100vh;
-        min-width: 600px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: -5rem;
-    }
-
-    .my_title>p::after {
-        content: 'Have a great day';
-        font-size: .7rem;
-        position: relative;
-        top: 30px;
-        background-color: rgb(253, 178, 49);
-        border-radius: 2px;
-        padding: 0 10px 0 70px;
-        left: -200px;
-
-    }
-}
-
-@media (max-width: 570px) {
-    :root {
-        --btn-scale: 1;
-    }
-
-    header {
-        margin-top: 10px;
-        position: sticky;
-        top: 10px;
-        padding: 0 2rem 0 1rem;
-    }
-
-    .dropdown_menu {
-        left: 2rem;
-        width: unset;
-        transition: transform 0.3s ease;
-    }
-
-    .navbar .logo {
-        scale: 0.8;
-    }
-
-
-}
-
-/* -----Responsive NavBAr Query Ends--------- */
-
-/* ---------- Phones & tablets: full-bleed hero, lighter effects ---------- */
-@media (max-width: 992px) {
-    /* The header floats over the hero instead of pushing it down, which
-       removed the solid black band above the background image. */
-    header {
-        position: fixed;
-        top: max(10px, env(safe-area-inset-top));
-        left: 0;
-        right: 0;
-        margin-top: 0;
-    }
-
-    .navbar .logo {
-        width: auto;
-        white-space: nowrap;
-        background-color: rgba(30, 30, 30, 0.85);
-    }
-
-    .introduction {
-        /* svh = height with the browser bars visible, so the hero never
-           jumps or hides content behind the URL bar */
-        height: 100vh;
-        height: 100svh;
-        min-height: 520px;
-    }
-
+/* ---------- Phones & tablets: lighter effects ---------- */
+@media (max-width: 991.98px) {
     /* Softer edge fades so the artwork reaches the top of the screen */
     .image_container::before {
-        background: linear-gradient(0deg, rgba(15, 15, 15, 1) 0%, rgba(15, 15, 15, 0) 45%, rgba(15, 15, 15, 0) 75%, rgba(15, 15, 15, 0.75) 100%);
+        background: linear-gradient(0deg, rgba(15, 15, 15, 1) 0%, rgba(15, 15, 15, 0.6) 30%, rgba(15, 15, 15, 0) 60%, rgba(15, 15, 15, 0) 80%, rgba(15, 15, 15, 0.75) 100%);
     }
 
     .image_container::after {
@@ -503,53 +404,22 @@ body::-webkit-scrollbar-thumb {
     /* Plain dark menu: backdrop blur is expensive on phone GPUs */
     .dropdown_menu {
         backdrop-filter: none;
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
-    }
-
-    /* Grow to fit every link (the fixed 240px cut off "Contacts" and
-       "Connect With Me" on phones) */
-    .dropdown_menu {
-        height: auto;
-        max-height: 0;
-        transition: max-height 0.3s ease, transform 0.3s ease;
-    }
-
-    .dropdown_menu.open {
-        height: auto;
-        max-height: 420px;
-    }
-
-    .dropdown_menu a {
-        display: block;
     }
 }
 
-@media (max-width: 750px) {
-    .my_title {
-        left: 0;
-        right: 0;
-        top: 0;
-        min-width: 0;
-        width: 100%;
-        height: 100%;
-        margin-top: 0;
-        padding: 0 1.25rem;
-        justify-content: flex-start;
-        font-size: clamp(1.6rem, 7.4vw, 2.6rem);
-        line-height: 1.15;
-        letter-spacing: 0.01em;
-        text-shadow: 0 2px 18px rgba(0, 0, 0, 0.55);
+/* Phones: text sits low on the darkest part of the artwork */
+@media (max-width: 575.98px) {
+    .hero-content {
+        justify-content: flex-end;
+        padding-bottom: clamp(56px, 12svh, 120px);
     }
 
-    .my_title>p::after {
-        display: block;
-        width: fit-content;
-        position: static;
-        margin-top: 1rem;
-        padding: 3px 12px;
-        font-size: 0.75rem;
-        letter-spacing: 0.08em;
-        border-radius: 4px;
-        text-shadow: none;
+    .hero-actions {
+        width: 100%;
+    }
+
+    .hero-btn {
+        flex: 1 1 auto;
+        padding: 0 20px;
     }
 }

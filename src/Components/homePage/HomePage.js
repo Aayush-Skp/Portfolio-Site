@@ -8,6 +8,17 @@ import Projects from '../projectPage/projects';
 import Experience from '../experiencePage/Experience';
 import Contact from '../contactPage/contact';
 import SocialLinks from '../socialLinks/SocialLinks';
+import { HiMenuAlt3, HiX } from 'react-icons/hi';
+import { FiArrowRight } from 'react-icons/fi';
+
+const LINKEDIN_URL = 'https://www.linkedin.com/in/krishna-panthi/';
+const NAV_LINKS = [
+  ['#about_section', 'About'],
+  ['#skill_section', 'Skills'],
+  ['#projects_section', 'Projects'],
+  ['#experience_section', 'Experience'],
+  ['#contact_section', 'Contacts'],
+];
 
 // The original three-layer golden glow (kept as-is for desktop).
 const glowShadow = (size, g) =>
@@ -22,6 +33,9 @@ export const HomePage = () => {
   const particleEls = useRef([]);
   const animationFrameRef = useRef(null);
   const mouseRef = useRef({ x: -9999, y: -9999 });
+  const headerRef = useRef(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [navHidden, setNavHidden] = useState(false);
 
   // Ensure page starts at top on load and prevent scroll issues
   useEffect(() => {
@@ -213,86 +227,83 @@ export const HomePage = () => {
     };
   }, [finePointer, particles]);
 
+  // Hide the navbar while scrolling down past the hero; any scroll up brings it back.
   useEffect(() => {
-    const toggleBtn = document.querySelector('.toggle_btn');
-    const dropDownMenu = document.querySelector('.dropdown_menu');
-    const navbar = document.querySelector('.navbar');
-    const intermediateContainer = document.querySelector('.intermediate-container');
-
     let prevScrollPos = window.pageYOffset;
-    let isNavbarHidden = false;
+    let hidden = false;
 
-    toggleBtn.onclick = () => {
-      dropDownMenu.classList.toggle('open');
-    };
-
-    // Close the mobile menu after tapping a link
-    const menuLinks = dropDownMenu.querySelectorAll('a');
-    const closeMenu = () => dropDownMenu.classList.remove('open');
-    menuLinks.forEach((a) => a.addEventListener('click', closeMenu));
-
-    const checkNavbarVisibility = () => {
-      const currentScrollPos = window.pageYOffset;
-
-      if (currentScrollPos > intermediateContainer.offsetTop) {
-        if (!isNavbarHidden) {
-          navbar.style.transform = 'scale(0)';
-          dropDownMenu.style.transform = 'scale(0)';
-          isNavbarHidden = true;
-        }
-      } else {
-        if (isNavbarHidden) {
-          navbar.style.transform = 'scale(1)';
-          dropDownMenu.style.transform = 'scale(1)';
-          isNavbarHidden = false;
-        }
+    const onScroll = () => {
+      const current = window.pageYOffset;
+      const heroEnd = introductionRef.current ? introductionRef.current.offsetHeight : 0;
+      let next = hidden;
+      if (current < prevScrollPos) next = false;
+      else if (current > prevScrollPos) next = current > heroEnd;
+      prevScrollPos = current;
+      if (next !== hidden) {
+        hidden = next;
+        setNavHidden(next);
+        if (next) setMenuOpen(false);
       }
-
-      if (currentScrollPos < prevScrollPos) {
-        navbar.style.transform = 'scale(1)';
-        dropDownMenu.style.transform = 'scale(1)';
-        isNavbarHidden = false;
-      }
-
-      prevScrollPos = currentScrollPos;
     };
 
-    window.addEventListener('scroll', checkNavbarVisibility, { passive: true });
-
-    return () => {
-      window.removeEventListener('scroll', checkNavbarVisibility);
-      menuLinks.forEach((a) => a.removeEventListener('click', closeMenu));
-    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  // Close the mobile menu on Escape, a tap outside it, or when the screen gets wide.
+  useEffect(() => {
+    if (!menuOpen) return undefined;
+    const onKey = (e) => { if (e.key === 'Escape') setMenuOpen(false); };
+    const onPointer = (e) => {
+      if (headerRef.current && !headerRef.current.contains(e.target)) setMenuOpen(false);
+    };
+    const wide = window.matchMedia('(min-width: 992px)');
+    const onWide = (e) => { if (e.matches) setMenuOpen(false); };
+    document.addEventListener('keydown', onKey);
+    document.addEventListener('pointerdown', onPointer);
+    wide.addEventListener('change', onWide);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('pointerdown', onPointer);
+      wide.removeEventListener('change', onWide);
+    };
+  }, [menuOpen]);
+
+  const closeMenu = () => setMenuOpen(false);
 
   return (
     <>
-      <header>
-        <div className="navbar">
-          <div className="logo"><a href="#homepage_section">Aayush SKP</a></div>
+      <header ref={headerRef} className={`site-header${navHidden ? ' is-hidden' : ''}`}>
+        <nav className="navbar" aria-label="Primary">
+          <a href="#homepage_section" className="logo">Aayush SKP</a>
           <ul className="links">
-            <li><a href="#about_section">About</a></li>
-            <li><a href="#skill_section">Skills</a></li>
-            <li><a href="#projects_section">Projects</a></li>
-            <li><a href="#experience_section">Experience</a></li>
-            <li><a href="#contact_section">Contacts</a></li>
+            {NAV_LINKS.map(([href, label]) => (
+              <li key={href}><a href={href}>{label}</a></li>
+            ))}
           </ul>
-          <a href="https://www.linkedin.com/in/krishna-panthi/" className="connect_btn" target="_blank" rel="noopener noreferrer">Connect With Me</a>
-          <div className="toggle_btn">
-            <i className="Drop_down_btn"></i>
-          </div>
-        </div>
-        <div className="dropdown_menu">
-          <li><a href="#about_section">About</a></li>
-          <li><a href="#skill_section">Skills</a></li>
-          <li><a href="#projects_section">Projects</a></li>
-          <li><a href="#experience_section">Experience</a></li>
-          <li><a href="#contact_section">Contacts</a></li>
-          <li><a href="https://www.linkedin.com/in/krishna-panthi/" className="connect_btn" target="_blank" rel="noopener noreferrer">Connect With Me</a></li>
+          <a href={LINKEDIN_URL} className="connect_btn" target="_blank" rel="noopener noreferrer">Connect With Me</a>
+          <button
+            type="button"
+            className="toggle_btn"
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            {menuOpen ? <HiX aria-hidden="true" /> : <HiMenuAlt3 aria-hidden="true" />}
+          </button>
+        </nav>
+        <div id="mobile-menu" className={`dropdown_menu${menuOpen ? ' open' : ''}`}>
+          <ul>
+            {NAV_LINKS.map(([href, label]) => (
+              <li key={href}><a href={href} onClick={closeMenu}>{label}</a></li>
+            ))}
+          </ul>
+          <a href={LINKEDIN_URL} className="connect_btn" target="_blank" rel="noopener noreferrer" onClick={closeMenu}>Connect With Me</a>
         </div>
       </header>
 
-      <div className="introduction" id='homepage_section' ref={introductionRef}>
+      <section className="introduction" id='homepage_section' ref={introductionRef}>
         <div className="golden-dust-container">
           {particles.map((particle, i) => (
             <div
@@ -313,13 +324,20 @@ export const HomePage = () => {
             />
           ))}
         </div>
-        <div className="my_title">
-          <p>Krishna Panthi<br />Web/App Developer</p>
-        </div>
         <div className="image_container">
           <img src={img} alt="" fetchpriority="high" decoding="async" />
         </div>
-      </div>
+        <div className="hero-content">
+          <h1 className="hero-title">Krishna Panthi</h1>
+          <p className="hero-role">Web / App Developer</p>
+          <div className="hero-actions">
+            <a href="#projects_section" className="hero-btn hero-btn-primary">
+              View Projects <FiArrowRight aria-hidden="true" />
+            </a>
+            <a href="#contact_section" className="hero-btn hero-btn-ghost">Get in Touch</a>
+          </div>
+        </div>
+      </section>
       <div className="intermediate-container" id='about_section'>
         <About />
       </div>
